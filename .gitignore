@@ -1,70 +1,81 @@
-# === Flutter / Dart ===
-.dart_tool/
-.packages
-.pub-cache/
-.pub/
-build/
-.flutter-plugins
-.flutter-plugins-dependencies
+# =========================
+# 1. Chặn Toàn Bộ (Global Deny)
+# =========================
+*
 
-# === IDE ===
-.idea/
-.vscode/
-*.iml
+# =========================
+# 2. Quy tắc "Mở khóa" (Allow-list)
+# =========================
+# Giữ lại các file cấu hình quan trọng
+!.gitignore
+!pubspec.yaml
+!pubspec.lock
+!README.md
+!analysis_options.yaml
+!.metadata
+!CHANGELOG.md
 
-# === Android ===
-android/.gradle/
-android/local.properties
-android/key.properties
-android/**/GeneratedPluginRegistrant.java
+# Giữ lại mã nguồn và tài sản
+!lib/
+!lib/**
+!assets/
+!assets/**
 
-# Build outputs
-android/app/build/
-android/app/release/
-*.apk
-*.aab
+# Android: Chỉ giữ lại thư mục src và build.gradle cần thiết
+!android/
+android/*
+!android/app/
+android/app/*
+!android/build.gradle
+!android/settings.gradle
+!android/app/build.gradle
+!android/app/src/
+!android/app/src/**
 
-# === iOS ===
-ios/Pods/
-ios/.symlinks/
-ios/Flutter/Flutter.framework
-ios/Flutter/Flutter.podspec
-ios/Flutter/Generated.xcconfig
-ios/Flutter/App.framework
-ios/Flutter/engine/
-ios/Flutter/flutter_export_environment.sh
-ios/Flutter/.last_build_id
-ios/Runner.xcworkspace/
+# iOS: Chỉ giữ lại thư mục Runner và các file cấu hình dự án
+!ios/
+ios/*
+!ios/Runner/
+!ios/Runner/**
+!ios/Podfile
+!ios/Podfile.lock
 
-# === macOS ===
-macos/Pods/
-macos/Flutter/ephemeral/
-macos/Runner.xcworkspace/
-
-# === Windows ===
-windows/flutter/ephemeral/
-windows/runner/GeneratedPluginRegistrant.*
-
-# === Linux ===
-linux/flutter/ephemeral/
-linux/runner/GeneratedPluginRegistrant.*
-
-# === Web ===
-web/.dart_tool/
-web/build/
-
-# === Logs ===
-*.log
-
-# === Environment / Secrets ===
+# =========================
+# 3. Chặn Cụ Thể (Hard Block)
+# =========================
+# Môi trường và Bảo mật
 .env
 .env.*
 *.keystore
 *.jks
+android/local.properties
+android/key.properties
 
-# === Coverage ===
-coverage/
+# Build và Cache (Ngay cả khi lỡ mở ở trên)
+build/
+.dart_tool/
+.pub-cache/
+.pub/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
 
-# === OS files ===
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# OS files
 .DS_Store
 Thumbs.db
+
+# Rác và File nén
+*.log
+backend.rar
+
+# Các nền tảng không dùng đến (Tùy chỉnh nếu bạn có làm Web/Desktop)
+linux/
+macos/
+windows/
+web/
+test/
