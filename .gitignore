@@ -1,0 +1,70 @@
+# === Flutter / Dart ===
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# === IDE ===
+.idea/
+.vscode/
+*.iml
+
+# === Android ===
+android/.gradle/
+android/local.properties
+android/key.properties
+android/**/GeneratedPluginRegistrant.java
+
+# Build outputs
+android/app/build/
+android/app/release/
+*.apk
+*.aab
+
+# === iOS ===
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/App.framework
+ios/Flutter/engine/
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/.last_build_id
+ios/Runner.xcworkspace/
+
+# === macOS ===
+macos/Pods/
+macos/Flutter/ephemeral/
+macos/Runner.xcworkspace/
+
+# === Windows ===
+windows/flutter/ephemeral/
+windows/runner/GeneratedPluginRegistrant.*
+
+# === Linux ===
+linux/flutter/ephemeral/
+linux/runner/GeneratedPluginRegistrant.*
+
+# === Web ===
+web/.dart_tool/
+web/build/
+
+# === Logs ===
+*.log
+
+# === Environment / Secrets ===
+.env
+.env.*
+*.keystore
+*.jks
+
+# === Coverage ===
+coverage/
+
+# === OS files ===
+.DS_Store
+Thumbs.db
