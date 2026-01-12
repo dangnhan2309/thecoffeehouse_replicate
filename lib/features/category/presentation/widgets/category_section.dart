@@ -1,77 +1,102 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:nhom2_thecoffeehouse/appconfig.dart';
 import 'package:nhom2_thecoffeehouse/features/category/domain/entities/category.dart';
+import 'package:nhom2_thecoffeehouse/features/category/presentation/widgets/category_item.dart';
+import 'package:nhom2_thecoffeehouse/features/home/presentation/state/home_provider.dart';
+import 'package:provider/provider.dart';
 
-class CategorySection extends StatelessWidget {
+class CategorySection extends StatefulWidget {
   final List<Category> categories;
-  final ValueChanged<int>? onCategoryTap;
+  final ValueChanged<int> onCategoryTap;
 
   const CategorySection({
     super.key,
     required this.categories,
-    this.onCategoryTap,
+    required this.onCategoryTap,
   });
 
   @override
+  State<CategorySection> createState() => _CategorySectionState();
+}
+
+class _CategorySectionState extends State<CategorySection> {
+  double _scrollProgress = 0.0;
+
+  @override
   Widget build(BuildContext context) {
-    if (categories.isEmpty) {
-      return const SizedBox(
-        height: 200,
-        child: Center(child: Text('Không có danh mục nào')),
-      );
-    }
+    if (widget.categories.isEmpty) return const SizedBox.shrink();
 
-    return SizedBox(
-      height: 210,
-      child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
-        itemBuilder: (context, index) {
-          final cat = categories[index];
+    final homeProvider = context.read<HomeProvider>();
 
-          return InkWell(
-            onTap: () => onCategoryTap?.call(cat.id),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl:
-                      "${AppConfig.baseUrl}/static/${cat.imageUrl ?? ''}",
-                      fit: BoxFit.cover,
-                      placeholder: (_, __) =>
-                      const Center(child: CircularProgressIndicator()),
-                      errorWidget: (_, __, ___) => Container(
-                        color: Colors.grey[200],
-                        child: const Icon(Icons.local_cafe, size: 40),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                SizedBox(
-                  width: 60,
-                  child: Text(
-                    cat.name,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
+    return Column(
+      children: [
+        SizedBox(
+          height: 200,
+          child: NotificationListener<ScrollNotification>(
+            onNotification: (notification) {
+              if (notification is ScrollUpdateNotification) {
+                setState(() {
+                  // Tính toán % đã cuộn
+                  _scrollProgress = notification.metrics.pixels /
+                      notification.metrics.maxScrollExtent;
+                  // Đảm bảo giá trị nằm trong khoảng 0.0 -> 1.0
+                  _scrollProgress = _scrollProgress.clamp(0.0, 1.0);
+                });
+              }
+              return true;
+            },
+            child: GridView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 16,
+                childAspectRatio: 1.1,
+              ),
+              itemCount: widget.categories.length,
+              itemBuilder: (context, index) {
+                final category = widget.categories[index];
+                return InkWell(
+                  onTap: () {
+                    homeProvider.scrollToCategory(category.id);
+                    widget.onCategoryTap(category.id);
+                  },
+                  child: CategoryItem(cat: category),
+                );
+              },
             ),
-          );
-        },
-      ),
+          ),
+        ),
+        
+        // THANH TRƯỢT NGANG (Scroll Indicator)
+        const SizedBox(height: 12),
+        Container(
+          width: 40, // Độ dài tổng của thanh xám
+          height: 4,
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(2),
+          ),
+          child: Stack(
+            children: [
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 50),
+                left: _scrollProgress * 20, // Di chuyển trong phạm vi 20px (40 tổng - 20 thanh cam)
+                child: Container(
+                  width: 20, // Độ dài của thanh màu cam
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF26522),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
     );
   }
 }

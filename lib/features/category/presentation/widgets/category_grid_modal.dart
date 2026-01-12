@@ -88,8 +88,8 @@ class CategoryGridModal extends StatelessWidget {
                           child: Column(
                             children: [
                               Container(
-                                height: 72,
-                                width: 72,
+                                height: 60,
+                                width: 60,
                                 decoration: BoxDecoration(
                                   color: Colors.orange[50],
                                   borderRadius: BorderRadius.circular(16),

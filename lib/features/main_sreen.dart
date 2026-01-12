@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nhom2_thecoffeehouse/features/home/presentation/screens/home_screen.dart';
 import 'package:nhom2_thecoffeehouse/features/home/presentation/widgets/bottom_navigation.dart';
-import 'package:nhom2_thecoffeehouse/features/order/presentation/order_screen.dart';
+import 'package:nhom2_thecoffeehouse/features/order/presentation/screens/order_screen.dart';
+import 'package:nhom2_thecoffeehouse/features/auth/presentation/screens/profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -13,24 +14,22 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  // Dùng PageStorageKey để giữ trạng thái của mỗi tab
   final List<Widget> _pages = [
     const HomeScreen(key: PageStorageKey('HomePage')),
     const OrderScreen(key: PageStorageKey('OrderPage')),
-    //const StorePage(key: PageStorageKey('StorePage')),
+    Container(
+      key: const PageStorageKey('StorePage'),
+      color: Colors.white,
+      child: const Center(child: Text("Cửa hàng")),
+    ),
     Container(
       key: const PageStorageKey('PromoPage'),
       color: Colors.white,
       child: const Center(child: Text("Ưu đãi")),
     ),
-    Container(
-      key: const PageStorageKey('OtherPage'),
-      color: Colors.white,
-      child: const Center(child: Text("Khác")),
-    ),
+    const ProfileScreen(key: PageStorageKey('ProfilePage')),
   ];
 
-  // Giữ scroll position của mỗi tab
   final PageStorageBucket _bucket = PageStorageBucket();
 
   @override
@@ -44,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex ,
+        currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
             _currentIndex = index;

@@ -43,11 +43,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
             activeIcon: Icon(Icons.shopping_bag),
             label: 'Đặt hàng',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.store_outlined),
-          //   activeIcon: Icon(Icons.store),
-          //   label: 'Cửa hàng',
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.store_outlined),
+            activeIcon: Icon(Icons.store),
+            label: 'Cửa hàng',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.local_offer_outlined),
             activeIcon: Icon(Icons.local_offer),

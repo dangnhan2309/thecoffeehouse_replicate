@@ -2,7 +2,6 @@
 # 1. Chặn Toàn Bộ (Global Deny)
 # =========================
 *
-
 # =========================
 # 2. Quy tắc "Mở khóa" (Allow-list)
 # =========================
@@ -39,6 +38,8 @@ ios/*
 !ios/Runner/**
 !ios/Podfile
 !ios/Podfile.lock
+!backend_cf/
+!backend_cf/**
 
 # =========================
 # 3. Chặn Cụ Thể (Hard Block)
@@ -71,7 +72,7 @@ Thumbs.db
 
 # Rác và File nén
 *.log
-backend.rar
+
 
 # Các nền tảng không dùng đến (Tùy chỉnh nếu bạn có làm Web/Desktop)
 linux/

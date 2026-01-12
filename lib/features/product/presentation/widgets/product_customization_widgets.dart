@@ -20,9 +20,9 @@ Widget buildSizeButton(
   return GestureDetector(
     onTap: () => provider.setSize(value),
     child: Container(
-      width: 130,
+      width: 160, // Tăng chiều rộng một chút để đủ chỗ cho hàng ngang
       margin: const EdgeInsets.only(right: 12),
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
       decoration: BoxDecoration(
         color: selected ? Colors.orange[50] : Colors.grey[50],
         border: Border.all(
@@ -30,13 +30,14 @@ Widget buildSizeButton(
         ),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center, // Căn giữa
         children: [
           Text(label,
               style: TextStyle(
                   fontWeight:
                   selected ? FontWeight.bold : FontWeight.w600)),
-          const SizedBox(height: 4),
+          const SizedBox(width: 8), // Khoảng cách giữa chữ và giá
           Text(
             provider.formatPrice(price),
             style: TextStyle(
@@ -61,18 +62,20 @@ Widget buildOptionSection({
           style: const TextStyle(
               fontSize: 18, fontWeight: FontWeight.bold)),
       const SizedBox(height: 12),
-      Row(
-        children: List.generate(labels.length, (index) {
-          final value = title.contains("đá")
-              ? IceOption.values[index]
-              : SugarOption.values[index];
-          final isSelected = selected == value;
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: List.generate(labels.length, (index) {
+            final value = title.contains("đá")
+                ? IceOption.values[index]
+                : SugarOption.values[index];
+            final isSelected = selected == value;
 
-          return Expanded(
-            child: GestureDetector(
+            return GestureDetector(
               onTap: () => onTap(value),
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 6),
+                width: 70,
+                margin: const EdgeInsets.only(right: 8),
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 decoration: BoxDecoration(
                   color: isSelected
@@ -93,9 +96,9 @@ Widget buildOptionSection({
                           : FontWeight.w600),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     ],
   );

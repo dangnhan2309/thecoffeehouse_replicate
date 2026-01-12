@@ -15,13 +15,11 @@ class PromotionRepositoryImpl implements PromotionRepository {
 
   @override
   Future<List<Promotion>> getPromotions() async {
-    final models = await promoRemote.getPromotions();
-    return models;
+    return await promoRemote.getPromotions();
   }
 
   @override
   Future<List<Product>> getProductsByPromotion(int promotionId) async {
-    final ids = await promoRemote.getProductIdsByPromotion(promotionId);
-    return await productRemote.getProductsByIds(ids);
+    return await promoRemote.getProductsByPromotion(promotionId);
   }
 }

@@ -112,8 +112,8 @@ class ExploreDetailContent extends StatelessWidget {
                     textAlign: TextAlign.justify,
                   ),
                   const SizedBox(height: 48),
-                  Center(
-                    child: const Text(
+                  const Center(
+                    child:  Text(
                       'Cảm ơn bạn đã đọc bài viết này!',
                       style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic, color: Color(0xFFFF6F00)),
                     ),

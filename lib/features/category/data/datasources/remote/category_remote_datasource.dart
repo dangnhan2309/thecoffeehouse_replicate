@@ -10,11 +10,21 @@ abstract class CategoryRemoteDatasource {
 class CategoryRemoteDatasourceImpl implements CategoryRemoteDatasource {
   @override
   Future<List<CategoryModel>> getCategories() async {
-    final response = await http.get(
-      Uri.parse('${AppConfig.baseUrl}/categories/'),
-    );
+    try {
+      final response = await http.get(
+        Uri.parse('${AppConfig.baseUrl}/categories/'),
+      ).timeout(const Duration(seconds: 5)); // Thêm timeout 5 giây
 
-    final List data = jsonDecode(response.body);
-    return data.map((e) => CategoryModel.fromJson(e)).toList();
+      if (response.statusCode == 200) {
+        final List data = jsonDecode(response.body);
+        return data.map((e) => CategoryModel.fromJson(e)).toList();
+      } else {
+        throw Exception('Server error: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Nếu không kết nối được, in log lỗi cụ thể ra console
+      print("GetCategories Error: $e tại địa chỉ ${AppConfig.baseUrl}");
+      rethrow;
+    }
   }
 }

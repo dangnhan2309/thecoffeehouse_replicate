@@ -21,4 +21,12 @@ class OrderModel extends Order {
           .toList(),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'user_id': userId,
+    'status': status,
+    'created_at': createdAt.toIso8601String(),
+    'items': items.map((e) => (e as OrderItemModel).toJson()).toList(),
+  };
 }

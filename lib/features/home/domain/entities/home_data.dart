@@ -1,7 +1,6 @@
 import 'package:nhom2_thecoffeehouse/features/category/domain/entities/category.dart';
 import 'package:nhom2_thecoffeehouse/features/exploreTopic/domain/entities/explore_topic.dart';
 import 'package:nhom2_thecoffeehouse/features/product/domain/entities/product.dart';
-import 'package:nhom2_thecoffeehouse/features/promotion/domain/entities/promotion.dart';
 
 class HomeData {
   final List<Category> categories;

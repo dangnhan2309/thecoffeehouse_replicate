@@ -3,8 +3,6 @@ import 'package:nhom2_thecoffeehouse/features/exploreTopic/domain/repositories/e
 import 'package:nhom2_thecoffeehouse/features/home/domain/entities/home_data.dart';
 import 'package:nhom2_thecoffeehouse/features/home/domain/repositories/home_repository.dart';
 import 'package:nhom2_thecoffeehouse/features/product/domain/repositories/product_repository.dart';
-import 'package:nhom2_thecoffeehouse/features/promotion/domain/repositories/promotion_repository.dart';
-
 
 class HomeRepositoryImpl implements HomeRepository {
   final CategoryRepository categoryRepo;

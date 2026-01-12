@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nhom2_thecoffeehouse/core/constants/enum.dart';
 import 'package:nhom2_thecoffeehouse/features/product/domain/entities/product.dart';
 import 'package:nhom2_thecoffeehouse/features/product/domain/usecases/get_products_by_category.dart';
+import 'package:nhom2_thecoffeehouse/core/utils/currency_formatter.dart';
 
 class ProductDetailProvider extends ChangeNotifier {
   final GetProductsByCategoryUseCase getProductsByCategory;
@@ -33,8 +34,7 @@ class ProductDetailProvider extends ChangeNotifier {
   }
 
   /// ================= FORMAT =================
-  String formatPrice(double price) =>
-      "${price.toStringAsFixed(0)}đ";
+  String formatPrice(double price) => CurrencyFormatter.formatVND(price);
 
   String formatDescription(String? desc) {
     if (desc == null || desc.isEmpty) return "Không có mô tả.";
@@ -111,13 +111,17 @@ class ProductDetailProvider extends ChangeNotifier {
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (_) {
         return StatefulBuilder(
           builder: (context, setModalState) {
-            return Padding(
+            return Container(
               padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,7 +137,7 @@ class ProductDetailProvider extends ChangeNotifier {
                     final checked = selectedToppingIds.contains(p.id);
                     return CheckboxListTile(
                       value: checked,
-                      activeColor: Colors.deepOrange,
+                      activeColor: const Color(0xFFF26522),
                       onChanged: (_) {
                         toggleTopping(p);
                         setModalState(() {});
@@ -145,10 +149,11 @@ class ProductDetailProvider extends ChangeNotifier {
                       secondary: Text(
                         "+${formatPrice(p.price ?? 0)}",
                         style: const TextStyle(
-                          color: Colors.deepOrange,
+                          color: Color(0xFFF26522),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      contentPadding: EdgeInsets.zero,
                     );
                   }),
 
@@ -158,15 +163,15 @@ class ProductDetailProvider extends ChangeNotifier {
                   ElevatedButton(
                     onPressed: () => Navigator.pop(context),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepOrange,
-                      minimumSize: const Size(double.infinity, 48),
+                      backgroundColor: const Color(0xFFF26522),
+                      minimumSize: const Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     child: Text(
                       "Xong • +${formatPrice(selectedToppingPrice)}",
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                 ],

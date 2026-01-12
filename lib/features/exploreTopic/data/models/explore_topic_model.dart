@@ -12,14 +12,17 @@ class ExploreTopicModel extends ExploreTopic {
 
   factory ExploreTopicModel.fromJson(Map<String, dynamic> json) {
     return ExploreTopicModel(
-      id: json['id'],
-      title: json['title'],
-      imageUrl: json['image_url'],
-      description: json['description'],
-      isActive: json['is_active'],
-      createdAt: DateTime.parse(json['created_at']),
+      id: json['id'] ?? 0, // Đảm bảo không bị null
+      title: json['title'] ?? '',
+      imageUrl: json['image_url'] ?? '',
+      description: json['description'] ?? '',
+      isActive: json['is_active'] ?? false,
+      createdAt: json['created_at'] != null 
+          ? DateTime.parse(json['created_at']) 
+          : DateTime.now(),
     );
   }
+  
   Map<String, dynamic> toJson() {
     return {
       'id': id,
