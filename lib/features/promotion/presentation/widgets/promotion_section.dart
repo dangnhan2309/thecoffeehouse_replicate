@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nhom2_thecoffeehouse/appconfig.dart';
+import 'package:nhom2_thecoffeehouse/core/constants/enum.dart';
 import 'package:nhom2_thecoffeehouse/core/utils/currency_formatter.dart';
 import 'package:nhom2_thecoffeehouse/features/home/presentation/state/home_provider.dart';
 import 'package:nhom2_thecoffeehouse/features/promotion/domain/entities/promotion.dart';
@@ -186,7 +187,21 @@ class PromotionSection extends StatelessWidget {
                           );
                         },
                         onAddToCart: () {
-                          context.read<OrderProvider>().addProduct(product);
+                          // Xác định size mặc định (ưu tiên Medium) để tránh giá 0đ
+                          SizeOption? defaultSize;
+                          if (product.priceMedium != null) {
+                            defaultSize = SizeOption.medium;
+                          } else if (product.priceSmall != null) {
+                            defaultSize = SizeOption.small;
+                          } else if (product.priceLarge != null) {
+                            defaultSize = SizeOption.large;
+                          }
+
+                          context.read<OrderProvider>().addProduct(
+                            product,
+                            size: defaultSize,
+                          );
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Đã thêm ${product.name} vào giỏ'),

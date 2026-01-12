@@ -8,6 +8,8 @@ import 'package:nhom2_thecoffeehouse/features/product/presentation/state/product
 import 'package:nhom2_thecoffeehouse/features/product/presentation/widgets/product_customization_widgets.dart';
 import 'package:nhom2_thecoffeehouse/features/order/presentation/state/order_provider.dart';
 import 'package:nhom2_thecoffeehouse/features/product/presentation/state/favorite_provider.dart';
+import 'package:nhom2_thecoffeehouse/features/auth/presentation/state/auth_provider.dart';
+import 'package:nhom2_thecoffeehouse/features/auth/presentation/screens/login_screen.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final Product product;
@@ -38,8 +40,8 @@ class _View extends StatelessWidget {
     final TextEditingController noteController = TextEditingController();
     final Set<int> drinkCategoryIds = {3, 4, 5, 6, 7, 8, 9, 10, 11};
 
-    return Consumer2<ProductDetailProvider, FavoriteProvider>(
-      builder: (_, provider, favoriteProvider, __) {
+    return Consumer3<ProductDetailProvider, FavoriteProvider, AuthProvider>(
+      builder: (_, provider, favoriteProvider, authProvider, __) {
         if (provider.isLoading) {
           return const Scaffold(
               body: Center(child: CircularProgressIndicator()));
@@ -262,6 +264,14 @@ class _View extends StatelessWidget {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
+                            if (!authProvider.isAuthenticated) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                              );
+                              return;
+                            }
+
                             final orderProvider = context.read<OrderProvider>();
                             final selectedToppingNames = provider.toppings
                                 .where((t) => provider.selectedToppingIds.contains(t.id))
@@ -275,7 +285,7 @@ class _View extends StatelessWidget {
                               ice: isDrink ? provider.selectedIce : null,
                               sugar: isDrink ? provider.selectedSugar : null,
                               toppings: isDrink ? selectedToppingNames : [],
-                              toppingPrice: provider.selectedToppingPrice, // Truyền giá topping
+                              toppingPrice: provider.selectedToppingPrice,
                               note: noteController.text,
                             );
 

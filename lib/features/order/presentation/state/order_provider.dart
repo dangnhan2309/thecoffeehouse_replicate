@@ -9,6 +9,7 @@ import 'package:nhom2_thecoffeehouse/features/order/domain/usecases/checkout_cas
 import 'package:nhom2_thecoffeehouse/features/order/domain/usecases/get_cart.dart';
 import 'package:nhom2_thecoffeehouse/features/product/domain/entities/product.dart';
 import 'package:nhom2_thecoffeehouse/features/product/domain/repositories/product_repository.dart';
+import 'package:nhom2_thecoffeehouse/features/vourcher/domain/entities/voucher.dart';
 
 class OrderProvider extends ChangeNotifier {
   final AddToCartUseCase addToCartUseCase;
@@ -30,12 +31,19 @@ class OrderProvider extends ChangeNotifier {
   Order? _cart;
   bool isLoading = false;
   String? error;
+  Voucher? _selectedVoucher;
 
   Order? get cart => _cart;
+  Voucher? get selectedVoucher => _selectedVoucher;
 
   int get cartItemCount {
     if (_cart == null) return 0;
     return _cart!.items.fold<int>(0, (sum, item) => sum + item.quantity);
+  }
+
+  double get subTotal {
+    if (_cart == null) return 0;
+    return _cart!.items.fold<double>(0, (sum, item) => sum + (item.price * item.quantity));
   }
 
   double get selectedTotal {
@@ -43,6 +51,22 @@ class OrderProvider extends ChangeNotifier {
     return _cart!.items
         .where((item) => item.isSelected)
         .fold<double>(0, (sum, item) => sum + (item.price * item.quantity));
+  }
+
+  double get discountAmount {
+    if (_selectedVoucher == null) return 0;
+    if (selectedTotal < _selectedVoucher!.minOrderValue) return 0;
+    return _selectedVoucher!.discountAmount;
+  }
+
+  double get finalTotal {
+    double total = selectedTotal - discountAmount;
+    return total > 0 ? total : 0;
+  }
+
+  void applyVoucher(Voucher? voucher) {
+    _selectedVoucher = voucher;
+    notifyListeners();
   }
 
   Future<void> loadCart() async {
@@ -182,6 +206,7 @@ class OrderProvider extends ChangeNotifier {
     try {
       await checkoutCashUseCase();
       _cart = null; 
+      _selectedVoucher = null; // Clear voucher after checkout
       error = null;
     } catch (e) {
       error = e.toString();

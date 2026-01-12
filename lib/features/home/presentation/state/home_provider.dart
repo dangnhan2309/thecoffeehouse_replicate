@@ -33,71 +33,6 @@ class HomeProvider extends ChangeNotifier {
   bool isLoading = false;
   String? error;
 
-  ScrollController? scrollController;
-  final Map<int, GlobalKey> sectionKeys = {}; 
-  final Map<int, GlobalKey> titleKeys = {};   
-
-  int? _currentCategoryId;
-  int? get currentCategoryId => _currentCategoryId;
-
-  Category? get currentCategory {
-    if (_currentCategoryId == null) return null;
-    try {
-      return categories.firstWhere((c) => c.id == _currentCategoryId);
-    } catch (_) {
-      return null;
-    }
-  }
-
-  void setupScrollListener(ScrollController controller, Map<int, GlobalKey> sKeys, Map<int, GlobalKey> tKeys) {
-    scrollController?.removeListener(_onScroll);
-    scrollController = controller;
-    sectionKeys.clear();
-    sectionKeys.addAll(sKeys);
-    titleKeys.clear();
-    titleKeys.addAll(tKeys);
-    scrollController?.addListener(_onScroll);
-    notifyListeners();
-  }
-
-  void _onScroll() {
-    if (scrollController == null) return;
-    
-    final scrollOffset = scrollController!.offset;
-    
-    // Nếu đang ở gần đầu trang (Banner/Promo), luôn hiện lời chào
-    if (scrollOffset < 150) {
-      if (_currentCategoryId != null) {
-        _currentCategoryId = null;
-        notifyListeners();
-      }
-      return;
-    }
-
-    int? activeCategoryId;
-    
-    // Duyệt qua các tiêu đề để tìm danh mục đang được hiển thị ở nửa trên màn hình
-    for (var category in categories) {
-      final key = titleKeys[category.id];
-      final context = key?.currentContext;
-      
-      if (context != null) {
-        final box = context.findRenderObject() as RenderBox;
-        final positionY = box.localToGlobal(Offset.zero).dy;
-        
-        // Nếu tiêu đề danh mục đã cuộn lên nửa trên màn hình (< 450px)
-        if (positionY < 450) {
-          activeCategoryId = category.id;
-        }
-      }
-    }
-
-    if (activeCategoryId != _currentCategoryId) {
-      _currentCategoryId = activeCategoryId;
-      notifyListeners();
-    }
-  }
-
   Future<void> loadHomeData() async {
     if (isLoading) return;
     isLoading = true;
@@ -130,24 +65,7 @@ class HomeProvider extends ChangeNotifier {
 
   List<Product> productsByCategory(int categoryId) => _productsByCategory[categoryId] ?? [];
   List<Product> productsByPromotion(int promoId) => _productsByPromotion[promoId] ?? [];
-
-  void scrollToCategory(int categoryId) {
-    final key = sectionKeys[categoryId];
-    if (key == null) return;
-    final ctx = key.currentContext;
-    if (ctx == null) return;
-
-    Scrollable.ensureVisible(
-      ctx,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-      alignment: 0.0,
-    );
-  }
-
-  @override
-  void dispose() {
-    scrollController?.removeListener(_onScroll);
-    super.dispose();
-  }
+  
+  // Getter giả để không làm lỗi code ở các UI đang gọi tới nó
+  int? get currentCategoryId => null;
 }

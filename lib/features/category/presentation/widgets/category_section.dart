@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nhom2_thecoffeehouse/features/category/domain/entities/category.dart';
 import 'package:nhom2_thecoffeehouse/features/category/presentation/widgets/category_item.dart';
-import 'package:nhom2_thecoffeehouse/features/home/presentation/state/home_provider.dart';
-import 'package:provider/provider.dart';
 
 class CategorySection extends StatefulWidget {
   final List<Category> categories;
@@ -24,8 +22,6 @@ class _CategorySectionState extends State<CategorySection> {
   @override
   Widget build(BuildContext context) {
     if (widget.categories.isEmpty) return const SizedBox.shrink();
-
-    final homeProvider = context.read<HomeProvider>();
 
     return Column(
       children: [
@@ -59,7 +55,6 @@ class _CategorySectionState extends State<CategorySection> {
                 final category = widget.categories[index];
                 return InkWell(
                   onTap: () {
-                    homeProvider.scrollToCategory(category.id);
                     widget.onCategoryTap(category.id);
                   },
                   child: CategoryItem(cat: category),

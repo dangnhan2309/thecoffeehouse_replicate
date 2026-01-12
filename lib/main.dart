@@ -15,6 +15,10 @@ import 'package:nhom2_thecoffeehouse/features/order/domain/usecases/get_cart.dar
 import 'package:nhom2_thecoffeehouse/features/order/domain/usecases/remove_from_cart.dart';
 import 'package:nhom2_thecoffeehouse/features/order/domain/usecases/update_cart_item.dart';
 import 'package:nhom2_thecoffeehouse/features/product/presentation/state/favorite_provider.dart';
+import 'package:nhom2_thecoffeehouse/features/vourcher/data/datasources/remote/voucher_remote_datasource.dart';
+import 'package:nhom2_thecoffeehouse/features/vourcher/data/repositories/voucher_repository_impl.dart';
+import 'package:nhom2_thecoffeehouse/features/vourcher/domain/usecases/get_vouchers.dart';
+import 'package:nhom2_thecoffeehouse/features/vourcher/presentation/state/vourcher_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -66,6 +70,7 @@ void main() async {
   final bannerRemote = BannerRemoteDatasourceImpl();
   final orderRemote = OrderRemoteDatasourceImpl(client: client, baseUrl: baseUrl, prefs: prefs);
   final promotionRemote = PromotionRemoteDatasourceImpl();
+  final voucherRemote = VoucherRemoteDataSourceImpl(client: client);
 
   final categoryRepo = CategoryRepositoryImpl(categoryRemote);
   final productRepo = ProductRepositoryImpl(productRemote);
@@ -76,6 +81,7 @@ void main() async {
     promoRemote: promotionRemote,
     productRemote: productRemote,
   );
+  final voucherRepo = VoucherRepositoryImpl(remoteDataSource: voucherRemote);
 
   // =========================
   // DOMAIN LAYER
@@ -87,6 +93,7 @@ void main() async {
   final getExploreTopicsUseCase = GetExploreTopicsUseCase(exploreTopicRepo);
   final getPromotionsUseCase = GetPromotionsUseCase(promotionRepo);
   final getProductsByPromotionUseCase = GetProductsByPromotionUseCase(promotionRepo);
+  final getVouchersUseCase = GetVouchersUseCase(voucherRepo);
   
   final addToCartUseCase = AddToCartUseCase(orderRepo);
   final getCartUseCase = GetCartUseCase(orderRepo);
@@ -128,8 +135,13 @@ void main() async {
             checkoutCashUseCase: checkoutCashUseCase,
             removeFromCartUseCase: removeFromCartUseCase,
             updateCartItemUseCase: updateCartItemUseCase,
-            productRepository: productRepo, // TRUYỀN THAM SỐ VÀO ĐÂY
+            productRepository: productRepo,
           )..loadCart(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => VoucherProvider(
+            getVouchersUseCase: getVouchersUseCase,
+          )..loadVouchers(),
         ),
         ChangeNotifierProvider(
           create: (_) => HomeAppBarProvider(getCategoriesUseCase: getCategoriesUseCase)..loadCategories(),

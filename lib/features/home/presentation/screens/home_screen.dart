@@ -21,28 +21,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final ScrollController _scrollController;
-
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final homeProvider = context.read<HomeProvider>();
-      homeProvider.loadHomeData().then((_) {
-        if (mounted) {
-          // Khởi tạo cả sectionKeys (để cuộn) và titleKeys (để nhận diện tiêu đề)
-          final Map<int, GlobalKey> sKeys = {
-            for (var c in homeProvider.categories) c.id: GlobalKey()
-          };
-          final Map<int, GlobalKey> tKeys = {
-            for (var c in homeProvider.categories) c.id: GlobalKey()
-          };
-          homeProvider.setupScrollListener(_scrollController, sKeys, tKeys);
-        }
-      });
-      context.read<OrderProvider>().loadCart();
+      if (mounted) {
+        context.read<HomeProvider>().loadHomeData();
+        context.read<OrderProvider>().loadCart();
+      }
     });
   }
 
@@ -54,16 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context) => CategoryGridModal(
         onCategoryTap: (categoryId) {
           Navigator.pop(context);
-          context.read<HomeProvider>().scrollToCategory(categoryId);
+          // Tính năng scrollToCategory đã bị xóa
         },
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
   }
 
   @override
@@ -82,7 +62,6 @@ class _HomeScreenState extends State<HomeScreen> {
           body: RefreshIndicator(
             onRefresh: () => provider.loadHomeData(),
             child: CustomScrollView(
-              controller: _scrollController,
               slivers: [
                 SliverPersistentHeader(
                   pinned: true,
@@ -94,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SliverToBoxAdapter(
                   child: Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     child: BannerCarousel(),
                   ),
                 ),
@@ -120,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: CategorySection(
                       categories: provider.categories,
                       onCategoryTap: (categoryId) {
-                        context.read<HomeProvider>().scrollToCategory(categoryId);
+                        // Tính năng scrollToCategory đã bị xóa
                       },
                     ),
                   ),
@@ -135,20 +114,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         final products = provider.productsByCategory(category.id);
                         if (products.isEmpty) return const SizedBox.shrink();
 
-                        // Key cho cả khối section (để scroll tới)
-                        final sectionKey = provider.sectionKeys[category.id];
-                        // Key cho Text tiêu đề (để nhận diện vị trí)
-                        final titleKey = provider.titleKeys[category.id];
-
                         return Container(
-                          key: sectionKey,
                           padding: const EdgeInsets.only(top: 24, bottom: 8),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Gán Key vào Text tiêu đề
                               Text(
-                                key: titleKey,
                                 category.name,
                                 style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                               ),
@@ -181,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     onAddToCart: () async {
                                       final orderProvider = context.read<OrderProvider>();
                                       await orderProvider.addProduct(product, quantity: 1);
-                                      if (mounted) {
+                                      if (context.mounted) {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             content: Text('Đã thêm ${product.name} vào giỏ'),

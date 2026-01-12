@@ -3,6 +3,7 @@ import 'package:nhom2_thecoffeehouse/features/home/presentation/screens/home_scr
 import 'package:nhom2_thecoffeehouse/features/home/presentation/widgets/bottom_navigation.dart';
 import 'package:nhom2_thecoffeehouse/features/order/presentation/screens/order_screen.dart';
 import 'package:nhom2_thecoffeehouse/features/auth/presentation/screens/profile_screen.dart';
+import 'package:nhom2_thecoffeehouse/features/vourcher/presentation/screens/voucher_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -22,11 +23,7 @@ class _MainScreenState extends State<MainScreen> {
       color: Colors.white,
       child: const Center(child: Text("Cửa hàng")),
     ),
-    Container(
-      key: const PageStorageKey('PromoPage'),
-      color: Colors.white,
-      child: const Center(child: Text("Ưu đãi")),
-    ),
+    const VoucherScreen(key: PageStorageKey('PromoPage')),
     const ProfileScreen(key: PageStorageKey('ProfilePage')),
   ];
 
