@@ -1,28 +1,72 @@
-import 'package:flutter/material.dart';
+import 'package:nhom2_thecoffeehouse/core/constants/enum.dart';
+import 'package:nhom2_thecoffeehouse/features/store/domain/entities/store.dart';
+import 'package:nhom2_thecoffeehouse/features/store/domain/usecases/get_nearest_stores.dart';
 import 'package:nhom2_thecoffeehouse/features/store/domain/usecases/get_stores.dart';
-import 'package:nhom2_thecoffeehouse/features/store/store.dart';
+import 'package:nhom2_thecoffeehouse/features/store/domain/usecases/get_stores_by_city.dart';
+import 'package:flutter/material.dart';
 
 class StoreProvider extends ChangeNotifier {
-  final GetStoresUseCase loadStoreData;
+  final GetStoresUseCase getStoresUseCase;
+  final GetStoresByCityUseCase getStoresByCityUseCase;
+  final GetNearestStoresUseCase getNearestStoresUseCase;
 
-  StoreProvider({required this.loadStoreData});
+  StoreProvider({
+    required this.getStoresUseCase,
+    required this.getStoresByCityUseCase,
+    required this.getNearestStoresUseCase,
+  });
 
-  bool isLoading = false;
-  String? error;
   List<Store> stores = [];
+  bool isLoading = false;
+  CityEnum _selectedCity = CityEnum.hcm;
 
-  Future<void> load() async {
+  CityEnum get selectedCity => _selectedCity;
+
+
+
+  Future<void> loadStores() async {
+    isLoading = true;
+    notifyListeners();
+
+    stores = await getStoresUseCase();
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+
+  Future<void> loadNearestStores(double lat, double lng) async {
+    isLoading = true;
+    notifyListeners();
+
+    stores = await getNearestStoresUseCase(lat, lng);
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> selectCity(CityEnum city) async {
+    if (_selectedCity == city) return;
+
+    _selectedCity = city;
+    notifyListeners(); // ✅ update dropdown UI
+
+    await loadStoresByCity(); // ✅ fetch lại data
+  }
+
+  Future<void> loadStoresByCity() async {
+    isLoading = true;
+    notifyListeners();
+
     try {
-      isLoading = true;
-      notifyListeners();
-      stores = await loadStoreData();
-      error = null; // reset error khi load thành công
+      final result = await getStoresByCityUseCase(_selectedCity);
+
+      stores = result; // ✅ THAY LIST
     } catch (e) {
-      error = e.toString();
-      stores = []; // reset list khi lỗi
-    } finally {
-      isLoading = false;
-      notifyListeners();
+      debugPrint('Load store error: $e');
     }
+
+    isLoading = false;
+    notifyListeners(); // ✅ QUAN TRỌNG
   }
 }

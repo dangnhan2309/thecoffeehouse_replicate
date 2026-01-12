@@ -15,6 +15,12 @@ import 'package:nhom2_thecoffeehouse/features/order/domain/usecases/get_cart.dar
 import 'package:nhom2_thecoffeehouse/features/order/domain/usecases/remove_from_cart.dart';
 import 'package:nhom2_thecoffeehouse/features/order/domain/usecases/update_cart_item.dart';
 import 'package:nhom2_thecoffeehouse/features/product/presentation/state/favorite_provider.dart';
+import 'package:nhom2_thecoffeehouse/features/store/data/datasources/remote/store_remote_datasource.dart';
+import 'package:nhom2_thecoffeehouse/features/store/data/repositories/store_repository_impl.dart';
+import 'package:nhom2_thecoffeehouse/features/store/domain/usecases/get_nearest_stores.dart';
+import 'package:nhom2_thecoffeehouse/features/store/domain/usecases/get_stores.dart';
+import 'package:nhom2_thecoffeehouse/features/store/domain/usecases/get_stores_by_city.dart';
+import 'package:nhom2_thecoffeehouse/features/store/presentation/state/store_provider.dart';
 import 'package:nhom2_thecoffeehouse/features/vourcher/data/datasources/remote/voucher_remote_datasource.dart';
 import 'package:nhom2_thecoffeehouse/features/vourcher/data/repositories/voucher_repository_impl.dart';
 import 'package:nhom2_thecoffeehouse/features/vourcher/domain/usecases/get_vouchers.dart';
@@ -71,6 +77,7 @@ void main() async {
   final orderRemote = OrderRemoteDatasourceImpl(client: client, baseUrl: baseUrl, prefs: prefs);
   final promotionRemote = PromotionRemoteDatasourceImpl();
   final voucherRemote = VoucherRemoteDataSourceImpl(client: client);
+  final storeRemote = StoreRemoteDataSourceImpl();
 
   final categoryRepo = CategoryRepositoryImpl(categoryRemote);
   final productRepo = ProductRepositoryImpl(productRemote);
@@ -81,6 +88,7 @@ void main() async {
     promoRemote: promotionRemote,
     productRemote: productRemote,
   );
+  final storeRepo = StoreRepositoryImpl(storeRemote);
   final voucherRepo = VoucherRepositoryImpl(remoteDataSource: voucherRemote);
 
   // =========================
@@ -100,6 +108,9 @@ void main() async {
   final checkoutCashUseCase = CheckoutCashUseCase(orderRepo);
   final removeFromCartUseCase = RemoveFromCartUseCase(repository: orderRepo);
   final updateCartItemUseCase = UpdateCartItemUseCase(repository: orderRepo);
+  final getStoresUseCase = GetStoresUseCase(storeRepo);
+  final getStoresByCityUseCase = GetStoresByCityUseCase(storeRepo);
+  final getNearestStoresUseCase = GetNearestStoresUseCase(storeRepo);
 
   runApp(
     MultiProvider(
@@ -153,6 +164,13 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => BannerProvider(getBannersUseCase: getBannersUseCase)..loadBanners(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => StoreProvider(
+            getStoresUseCase: getStoresUseCase,
+            getStoresByCityUseCase: getStoresByCityUseCase,
+            getNearestStoresUseCase: getNearestStoresUseCase,
+          )..loadStores(),
         ),
       ],
       child: const MyApp(),
