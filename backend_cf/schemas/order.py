@@ -1,27 +1,42 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
+from datetime import datetime
 
-class OrderDetailCreate(BaseModel):
+class OrderItemBase(BaseModel):
     product_id: int
     quantity: int
     price: float
+    size: Optional[str] = None
+    ice: Optional[str] = None
+    sugar: Optional[str] = None
+    toppings: Optional[List[str]] = []
+    note: Optional[str] = None
 
-class OrderCreate(BaseModel):
-    items: List[OrderDetailCreate]
+class OrderItemCreate(OrderItemBase):
+    pass
 
-class OrderDetailResponse(BaseModel):
-    product_id: int
-    quantity: int
-    price: float
-
+class OrderItemResponse(OrderItemBase):
+    id: int
     class Config:
         from_attributes = True
 
 class OrderResponse(BaseModel):
     id: int
+    user_id: int
     total_price: float
     status: str
-    details: List[OrderDetailResponse]
+    created_at: datetime
+    items: List[OrderItemResponse]
 
     class Config:
         from_attributes = True
+
+
+
+class CartItemUpdate(BaseModel):
+    quantity: Optional[int] = None
+    size: Optional[str] = None
+    ice: Optional[str] = None
+    sugar: Optional[str] = None
+    toppings: Optional[List[str]] = None
+    note: Optional[str] = None

@@ -8,11 +8,11 @@ The app helps streamline daily operations such as order management, menu handlin
 ## 📱 Features
 
 - 📋 View coffee menu & categories
-- 🛒 Create and manage orders
+- 🛒 Add cart
 - 💰 Calculate total bills automatically
 - 🧾 Order history tracking
-- 📊 Sales statistics (daily / monthly)
-- 👤 Staff login & role-based access
+- Add favourite produtc
+- Edit profile
 - 🔄 Sync data with SQL database
 
 ---

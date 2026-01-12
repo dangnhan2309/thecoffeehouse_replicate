@@ -14,3 +14,4 @@ class User(Base):
 
     favorites = relationship("Favorite", back_populates="user")
     orders = relationship("Order", back_populates="user")
+    avatar_url = Column(String(500), nullable=True) 

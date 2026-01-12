@@ -26,5 +26,5 @@ class ProductOut(BaseModel):
     class Config:
         from_attributes = True
 
-class ProductIdsRequest(BaseModel):
+class ProductIdRequest(BaseModel):
     ids: List[int]

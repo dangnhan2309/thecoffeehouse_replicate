@@ -31,3 +31,17 @@ def create_explore_topic(
     db.commit()
     db.refresh(item)
     return item
+    
+# 🔹 Lấy chi tiết một explore topic theo ID
+@router.get("/{topic_id}/", response_model=ExploreOut)
+def get_explore_topic_by_id(topic_id: int, db: Session = Depends(get_db)):
+    topic = db.query(ExploreTopic).filter(
+        ExploreTopic.id == topic_id,
+        ExploreTopic.is_active == True
+    ).first()
+    
+    if not topic:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="Topic not found")
+    
+    return topic
