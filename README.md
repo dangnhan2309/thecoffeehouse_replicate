@@ -22,20 +22,21 @@ The app helps streamline daily operations such as order management, menu handlin
 ### Frontend
 - **Flutter**
 - **Dart**
-- State Management: *(Bloc / Provider / Riverpod)*
+- State Management: *Provider*
 
 ### Backend & Database
-- **SQL Database** (SQL Server / MySQL)
+- **SQL Database** SQL Server
 - **SQL Manager** for database administration
 - REST API for client–server communication
 
 ---
 
-## 🗂 Project Structure
+## 🗂 Project Structure: Clean Architecture
 
 ```text
 ├───core
 │   └───constants
+│   └───utils
 └───features
     ├───auth
     │   └───presentation
@@ -145,3 +146,4 @@ The app helps streamline daily operations such as order management, menu handlin
     │       ├───utils
     │       └───widgets
     └───user
+
