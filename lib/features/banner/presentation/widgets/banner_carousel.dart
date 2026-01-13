@@ -37,16 +37,15 @@ class BannerCarousel extends StatelessWidget {
             child: Center(child: Text('Không có banner nào')),
           );
         }
-
+		
         return CarouselSlider(
           options: CarouselOptions(
             height: 180,
             autoPlay: true,
             enlargeCenterPage: true,
-            viewportFraction: 1.0,
-            autoPlayInterval: const Duration(seconds: 5),
-            autoPlayAnimationDuration:
-            const Duration(milliseconds: 800),
+            viewportFraction: 0.9,
+            autoPlayInterval: const Duration(seconds: 3),
+            autoPlayAnimationDuration: const Duration(milliseconds: 800),
           ),
           items: provider.banners.map((banner) {
             return ClipRRect(

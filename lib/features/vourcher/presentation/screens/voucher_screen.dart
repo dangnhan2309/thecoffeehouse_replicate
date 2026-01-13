@@ -36,10 +36,9 @@ class _VoucherScreenState extends State<VoucherScreen> {
           appBar: AppBar(
             title: const Text(
               "Mã ưu đãi",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize:20),
+              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize:20),
             ),
-            backgroundColor: const Color(0xFFF26522),
-            foregroundColor: Colors.white,
+            backgroundColor: Colors.white,
             elevation: 0,
             centerTitle: true,
           ),

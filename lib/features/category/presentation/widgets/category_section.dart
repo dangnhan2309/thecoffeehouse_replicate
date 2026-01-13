@@ -4,12 +4,10 @@ import 'package:nhom2_thecoffeehouse/features/category/presentation/widgets/cate
 
 class CategorySection extends StatefulWidget {
   final List<Category> categories;
-  final ValueChanged<int> onCategoryTap;
 
   const CategorySection({
     super.key,
     required this.categories,
-    required this.onCategoryTap,
   });
 
   @override
@@ -31,43 +29,34 @@ class _CategorySectionState extends State<CategorySection> {
             onNotification: (notification) {
               if (notification is ScrollUpdateNotification) {
                 setState(() {
-                  // Tính toán % đã cuộn
-                  _scrollProgress = notification.metrics.pixels /
-                      notification.metrics.maxScrollExtent;
-                  // Đảm bảo giá trị nằm trong khoảng 0.0 -> 1.0
+                  _scrollProgress = notification.metrics.pixels / notification.metrics.maxScrollExtent;
                   _scrollProgress = _scrollProgress.clamp(0.0, 1.0);
                 });
               }
               return true;
             },
             child: GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16), 
               scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 16,
-                childAspectRatio: 1.1,
+                crossAxisCount: 2, 
+                mainAxisSpacing: 12, 
+                crossAxisSpacing: 16, 
+                childAspectRatio: 1.1, 
               ),
               itemCount: widget.categories.length,
               itemBuilder: (context, index) {
                 final category = widget.categories[index];
                 return InkWell(
-                  onTap: () {
-                    widget.onCategoryTap(category.id);
-                  },
                   child: CategoryItem(cat: category),
                 );
               },
             ),
           ),
         ),
-        
-        // THANH TRƯỢT NGANG (Scroll Indicator)
         const SizedBox(height: 12),
         Container(
-          width: 40, // Độ dài tổng của thanh xám
+          width: 40, 
           height: 4,
           decoration: BoxDecoration(
             color: Colors.grey[200],
@@ -77,9 +66,9 @@ class _CategorySectionState extends State<CategorySection> {
             children: [
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 50),
-                left: _scrollProgress * 20, // Di chuyển trong phạm vi 20px (40 tổng - 20 thanh cam)
+                left: _scrollProgress * 20, 
                 child: Container(
-                  width: 20, // Độ dài của thanh màu cam
+                  width: 20, 
                   height: 4,
                   decoration: BoxDecoration(
                     color: const Color(0xFFF26522),

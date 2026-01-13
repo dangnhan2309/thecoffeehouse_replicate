@@ -80,16 +80,6 @@ class _OrderScreenState extends State<OrderScreen> {
             SliverToBoxAdapter(
               child: CategorySection(
                 categories: categories,
-                onCategoryTap: (catId) {
-                  final key = _sectionKeys[catId];
-                  if (key != null && key.currentContext != null) {
-                    Scrollable.ensureVisible(
-                      key.currentContext!,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOut,
-                    );
-                  }
-                },
               ),
             ),
             

@@ -15,10 +15,10 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Tài khoản',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFFF26522),
+        backgroundColor: Colors.white,
         foregroundColor: Colors.white,
       ),
       body: Consumer<AuthProvider>(

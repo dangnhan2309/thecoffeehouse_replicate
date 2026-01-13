@@ -4,7 +4,6 @@ import 'package:nhom2_thecoffeehouse/features/banner/domain/entities/banner.dart
 
 class BannerProvider extends ChangeNotifier {
   final GetBannersUseCase getBannersUseCase;
-
   BannerProvider({required this.getBannersUseCase});
 
   List<BannerItem> banners = [];

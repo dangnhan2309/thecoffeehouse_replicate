@@ -6,12 +6,10 @@ import 'package:nhom2_thecoffeehouse/features/order/presentation/state/order_pro
 class DynamicHomeAppBar extends SliverPersistentHeaderDelegate {
   final String userName;
   final BuildContext context;
-  final VoidCallback onCategoryModalToggle;
 
   DynamicHomeAppBar({
     required this.userName,
     required this.context,
-    required this.onCategoryModalToggle,
   });
 
   @override

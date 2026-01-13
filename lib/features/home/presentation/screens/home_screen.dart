@@ -5,7 +5,6 @@ import 'package:nhom2_thecoffeehouse/features/product/presentation/widgets/produ
 import 'package:provider/provider.dart';
 import 'package:nhom2_thecoffeehouse/features/banner/presentation/widgets/banner_carousel.dart';
 import 'package:nhom2_thecoffeehouse/features/category/presentation/widgets/category_section.dart';
-import 'package:nhom2_thecoffeehouse/features/category/presentation/widgets/category_grid_modal.dart';
 import 'package:nhom2_thecoffeehouse/features/exploreTopic/presentation/widgets/explore_horizontal.dart';
 import 'package:nhom2_thecoffeehouse/features/home/presentation/state/home_provider.dart';
 import 'package:nhom2_thecoffeehouse/features/home/presentation/widgets/dynamic_appbar.dart';
@@ -32,19 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _showCategoryModal() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => CategoryGridModal(
-        onCategoryTap: (categoryId) {
-          Navigator.pop(context);
-          // Tính năng scrollToCategory đã bị xóa
-        },
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   delegate: DynamicHomeAppBar(
                     userName: userName,
                     context: context,
-                    onCategoryModalToggle: _showCategoryModal,
                   ),
                 ),
                 const SliverToBoxAdapter(
@@ -98,9 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   SliverToBoxAdapter(
                     child: CategorySection(
                       categories: provider.categories,
-                      onCategoryTap: (categoryId) {
-                        // Tính năng scrollToCategory đã bị xóa
-                      },
                     ),
                   ),
 

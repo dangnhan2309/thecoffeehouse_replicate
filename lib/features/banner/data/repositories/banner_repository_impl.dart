@@ -4,9 +4,7 @@ import 'package:nhom2_thecoffeehouse/features/banner/domain/repositories/banner_
 
 class BannerRepositoryImpl implements BannerRepository {
   final BannerRemoteDatasource remote;
-
   BannerRepositoryImpl(this.remote);
-
   @override
   Future<List<BannerItem>> getBanners() async {
     final models = await remote.getBanners();

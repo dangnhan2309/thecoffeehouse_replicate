@@ -13,7 +13,6 @@ class BannerRemoteDatasourceImpl implements BannerRemoteDatasource {
     final response = await http.get(
       Uri.parse('${AppConfig.baseUrl}/banners/'),
     );
-
     final List data = jsonDecode(response.body);
     return data.map((e) => BannerModel.fromJson(e)).toList();
   }

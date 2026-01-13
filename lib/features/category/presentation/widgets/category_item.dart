@@ -18,10 +18,9 @@ class CategoryItem extends StatelessWidget {
           height: 50,
           child: ClipOval(
             child: CachedNetworkImage(
-              imageUrl: "${AppConfig.baseUrl}/static/${cat.imageUrl ?? ''}",
+              imageUrl: "${AppConfig.baseUrl}/static/${cat.imageUrl}",
               fit: BoxFit.cover,
-              placeholder: (_, __) =>
-              const Center(child: CircularProgressIndicator()),
+              placeholder: (_, __) => const Center(child: CircularProgressIndicator()),
               errorWidget: (_, __, ___) => Container(
                 color: Colors.grey[200],
                 child: const Icon(Icons.local_cafe, size: 40),

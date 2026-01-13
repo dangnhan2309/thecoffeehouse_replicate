@@ -96,7 +96,6 @@ void main() async {
   // =========================
   final getCategoriesUseCase = GetCategoriesUseCase(categoryRepo);
   final getProductsByCategoryUseCase = GetProductsByCategoryUseCase(productRepo);
-  final getAllProductsUseCase = GetAllProductsUseCase(productRepo);
   final getBannersUseCase = GetBannersUseCase(bannerRepo);
   final getExploreTopicsUseCase = GetExploreTopicsUseCase(exploreTopicRepo);
   final getPromotionsUseCase = GetPromotionsUseCase(promotionRepo);
@@ -127,7 +126,6 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => CategoryProvider(
             getCategoriesUseCase: getCategoriesUseCase,
-            getProductsUseCase: getAllProductsUseCase,
           )..loadCategories(),
         ),
         ChangeNotifierProvider(
